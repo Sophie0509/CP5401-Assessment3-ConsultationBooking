@@ -4,7 +4,7 @@ from modules.booking import BookingError, Slot, book_slot, booking_rows, cancel_
 
 st.set_page_config(page_title="Campus Consultation Booking", page_icon="📅", layout="wide")
 st.title("Campus Consultation Booking System")
-st.caption("CP5401 Assessment 3 — V1.0 baseline")
+st.caption("CP5401 Assessment 3 — V1.1 with waitlist support")
 
 if "slots" not in st.session_state:
     st.session_state.slots = {}
@@ -32,6 +32,8 @@ if role == "Staff":
 
     st.subheader("Available slots")
     st.dataframe([vars(s) for s in st.session_state.slots.values()], use_container_width=True)
+    st.subheader("All bookings and waitlist entries")
+    st.dataframe(booking_rows(st.session_state.bookings), use_container_width=True)
 
 else:
     student = st.text_input("Student name", "Alex")
@@ -43,7 +45,10 @@ else:
         if st.button("Book selected slot"):
             try:
                 booking = book_slot(st.session_state.slots, st.session_state.bookings, student, slot_id)
-                st.success(f"Booking {booking.booking_id} confirmed")
+                if booking.status == "CONFIRMED":
+                    st.success(f"Booking {booking.booking_id} confirmed")
+                else:
+                    st.warning(f"Slot is full. Added to waitlist as {booking.booking_id}")
             except BookingError as exc:
                 st.error(str(exc))
 
@@ -51,13 +56,16 @@ else:
     mine = [b for b in st.session_state.bookings if b.student_name == student]
     st.dataframe(booking_rows(mine), use_container_width=True)
 
-    confirmed = [b.booking_id for b in mine if b.status == "CONFIRMED"]
-    if confirmed:
-        cancel_id = st.selectbox("Booking to cancel", confirmed)
-        if st.button("Cancel booking"):
+    active = [b.booking_id for b in mine if b.status in {"CONFIRMED", "WAITLISTED"}]
+    if active:
+        cancel_id = st.selectbox("Booking/waitlist entry to cancel", active)
+        if st.button("Cancel selected entry"):
             try:
-                cancel_booking(st.session_state.bookings, cancel_id, student)
-                st.success(f"Booking {cancel_id} cancelled")
+                cancelled, promoted = cancel_booking(st.session_state.slots, st.session_state.bookings, cancel_id, student)
+                if promoted:
+                    st.success(f"{cancelled.booking_id} cancelled. {promoted.booking_id} promoted from waitlist.")
+                else:
+                    st.success(f"{cancelled.booking_id} cancelled")
                 st.rerun()
             except BookingError as exc:
                 st.error(str(exc))
