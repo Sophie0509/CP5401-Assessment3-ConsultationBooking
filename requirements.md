@@ -25,3 +25,8 @@ Students need a simple way to book staff consultation sessions without creating 
 ## Risk and treatment
 - **Risk:** A booking change could break overlap or capacity rules.
 - **Treatment:** Keep automated regression tests for overlap, boundary and capacity behaviour and run them on every push and pull request.
+
+# V1.1 Change Requirement
+- **FR5:** When a slot is full, an eligible student is placed on a FIFO waitlist.
+- **BR4:** A student must not have duplicate active entries for the same slot.
+- **BR5:** Cancelling a confirmed booking may promote the first eligible waitlisted student without violating overlap or capacity rules.

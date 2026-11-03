@@ -22,6 +22,10 @@ pytest -q
 - `.github/workflows/quality-checks.yml` — continuous integration
 - `docs/verification.md` — verification evidence
 - `docs/validation.md` — validation plan/evidence
+- `docs/traceability.md` — requirements-to-test traceability
+- `docs/test-rationale.md` — why each automated test is used
+- `docs/review-intake.md` — AI-assisted change review intake
+- `docs/review-findings.md` — findings and pre-merge decision
 
 ## Releases
 - `v1.0` — baseline booking system

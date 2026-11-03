@@ -68,6 +68,17 @@ def _student_confirmed_bookings(bookings: List[Booking], student_name: str) -> L
     return [b for b in bookings if b.student_name == student_name and b.status == "CONFIRMED"]
 
 
+def _student_has_overlap(slots: Dict[str, Slot], bookings: List[Booking], student_name: str, requested: Slot) -> bool:
+    for existing in _student_confirmed_bookings(bookings, student_name):
+        if slots_overlap(slots[existing.slot_id], requested):
+            return True
+    return False
+
+
+def _next_booking_id(bookings: List[Booking]) -> str:
+    return f"B{len(bookings) + 1:03d}"
+
+
 def book_slot(slots: Dict[str, Slot], bookings: List[Booking], student_name: str, slot_id: str) -> Booking:
     student_name = student_name.strip()
     if not student_name:
@@ -76,32 +87,52 @@ def book_slot(slots: Dict[str, Slot], bookings: List[Booking], student_name: str
         raise BookingError("Selected slot does not exist")
 
     requested = slots[slot_id]
-    for existing in _student_confirmed_bookings(bookings, student_name):
-        existing_slot = slots[existing.slot_id]
-        if slots_overlap(existing_slot, requested):
-            raise BookingError("Student cannot hold overlapping consultation bookings")
+    if _student_has_overlap(slots, bookings, student_name, requested):
+        raise BookingError("Student cannot hold overlapping consultation bookings")
 
+    duplicate = next((b for b in bookings if b.student_name == student_name and b.slot_id == slot_id and b.status in {"CONFIRMED", "WAITLISTED"}), None)
+    if duplicate:
+        raise BookingError("Student already has a booking or waitlist entry for this slot")
+
+    status = "CONFIRMED"
     if len(_confirmed_for_slot(bookings, slot_id)) >= requested.capacity:
-        raise BookingError("Selected consultation slot is full")
+        status = "WAITLISTED"
 
     booking = Booking(
-        booking_id=f"B{len(bookings) + 1:03d}",
+        booking_id=_next_booking_id(bookings),
         student_name=student_name,
         slot_id=slot_id,
+        status=status,
     )
     bookings.append(booking)
     return booking
 
 
-def cancel_booking(bookings: List[Booking], booking_id: str, student_name: str) -> Booking:
+def _promote_next_waitlisted(slots: Dict[str, Slot], bookings: List[Booking], slot_id: str) -> Booking | None:
+    requested = slots[slot_id]
+    for candidate in bookings:
+        if candidate.slot_id != slot_id or candidate.status != "WAITLISTED":
+            continue
+        if _student_has_overlap(slots, bookings, candidate.student_name, requested):
+            continue
+        candidate.status = "CONFIRMED"
+        return candidate
+    return None
+
+
+def cancel_booking(slots: Dict[str, Slot], bookings: List[Booking], booking_id: str, student_name: str) -> tuple[Booking, Booking | None]:
     for booking in bookings:
         if booking.booking_id == booking_id:
             if booking.student_name != student_name:
                 raise BookingError("Students may cancel only their own bookings")
-            if booking.status != "CONFIRMED":
-                raise BookingError("Only confirmed bookings can be cancelled")
+            if booking.status not in {"CONFIRMED", "WAITLISTED"}:
+                raise BookingError("Only active bookings can be cancelled")
+            previous_status = booking.status
             booking.status = "CANCELLED"
-            return booking
+            promoted = None
+            if previous_status == "CONFIRMED":
+                promoted = _promote_next_waitlisted(slots, bookings, booking.slot_id)
+            return booking, promoted
     raise BookingError("Booking not found")
 
 
