@@ -73,7 +73,7 @@ def test_promotion_does_not_create_overlap():
     slots = sample_slots(capacity=1)
     bookings = []
     alex = book_slot(slots, bookings, "Alex", "S1")
-    jamie = book_slot(slots, bookings, "Jamie", "S2")
+    book_slot(slots, bookings, "Jamie", "S2")
     waitlisted = book_slot(slots, bookings, "Taylor", "S1")
     assert waitlisted.status == "WAITLISTED"
     from modules.booking import Booking
