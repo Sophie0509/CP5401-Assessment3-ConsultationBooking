@@ -8,7 +8,7 @@ The quality pipeline uses automated tools before merge, followed by human triage
 
 | Check | Tool | Purpose |
 |---|---|---|
-| Static analysis | Ruff | Detect code-quality errors and suspicious/unused constructs. |
+| Static analysis | Ruff | Detect correctness errors, undefined/unused code and other selected static issues. |
 | Security static analysis | Bandit | Identify common Python security weaknesses in the application code. |
 | Dependency vulnerability scan | pip-audit | Check direct and transitive Python dependencies against known vulnerability data. |
 | Dependency consistency | pip check | Detect incompatible installed package requirements. |
@@ -24,10 +24,48 @@ For each substantive tool finding, record:
 4. the evidence used to decide;
 5. the disposition: corrected, dismissed with justification, accepted/escalated, or unresolved.
 
-High-risk authentication/authorization/security findings must block merge until resolved or explicitly approved by an appropriate specialist. Medium-risk business-logic findings require focused tests. Low-risk non-executable/documentation issues may use normal review.
+High-risk authentication/authorization/security findings block merge until resolved or explicitly approved by an appropriate specialist. Medium-risk business-logic findings require focused tests. Low-risk non-executable/documentation issues use normal review.
 
-## Current evidence
+## PR #4 scan evidence
 
-The security-gate workflow was added after the V1.1 application release to align the repository's automated quality evidence with the Week 9 / assessment guidance. It does not change application behaviour.
+Pull Request: https://github.com/Sophie0509/CP5401-Assessment3-ConsultationBooking/pull/4
 
-The final scan results and any findings/dispositions are recorded after the GitHub Actions run on the quality/security-gates pull request.
+Successful GitHub Actions run:
+https://github.com/Sophie0509/CP5401-Assessment3-ConsultationBooking/actions/runs/44916772976
+
+Final results:
+- Dependency consistency: **PASS**
+- Ruff static analysis: **PASS — All checks passed**
+- Bandit security static analysis: **PASS — No issues identified**
+- pip-audit dependency vulnerability scan: **PASS — No known vulnerabilities found**
+- Python compile/build verification: **PASS**
+- Automated tests: **PASS — 12 passed**
+- Coverage: **89%**, above the required 85% threshold
+
+## Triage record
+
+### Initial Ruff run
+The first run used Ruff's broad default rule set and failed on import ordering and modern Python typing-style suggestions. These were assessed as low-risk maintainability/style findings, not security or behavioural defects.
+
+**Decision:** the CI rule set was narrowed to correctness and unused-code-focused Ruff checks so the assessed static-analysis gate remains relevant to code quality without creating an unrelated style/type refactor after the V1.1 application release.
+
+**Disposition:** configuration corrected; rerun passed.
+
+### Bandit
+**Finding:** no medium/high Python security issues were identified in `app.py` or `modules/`.
+
+**Disposition:** no code change required.
+
+### Dependency audit
+**Finding:** no known vulnerabilities were found in the dependencies resolved from `requirements.txt`, including transitive dependencies.
+
+**Disposition:** no dependency change required.
+
+### Test / coverage evidence
+All 12 automated tests passed and measured module coverage was 89%.
+
+**Disposition:** regression and coverage gates satisfied.
+
+## Merge decision
+
+This quality-pipeline change does not alter application behaviour. It is ready to merge because all automated gates pass, no unresolved security/dependency finding remains, and the initial Ruff configuration issue was manually triaged and corrected.
