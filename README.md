@@ -40,7 +40,6 @@ Tool findings are reviewed by a human before the merge decision. A scanner resul
 - `docs/review-intake.md` — AI-assisted change review intake
 - `docs/review-findings.md` — findings and pre-merge decision
 - `docs/manual-validation.md` — deployed validation record
-- `docs/ai-use.md` — Generative AI use record
 
 ## Releases
 - `v1.0` — baseline booking system
