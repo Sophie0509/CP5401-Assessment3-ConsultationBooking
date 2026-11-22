@@ -44,4 +44,4 @@ Tool findings are reviewed by a human before the merge decision. A scanner resul
 
 ## Releases
 - `v1.0` — baseline booking system
-- `v1.1` — assessed change (waitlist feature)
+- `v1.1` — FIFO waitlist feature

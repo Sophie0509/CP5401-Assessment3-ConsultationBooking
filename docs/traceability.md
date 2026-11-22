@@ -11,7 +11,7 @@ This table links requirements and business rules to automated or reviewable evid
 | BR1 No overlapping confirmed bookings | `test_overlapping_booking_is_rejected`, `test_touching_boundary_is_allowed` | Covers failure and exact boundary behaviour. |
 | BR2 Capacity is not exceeded | `test_waitlist_does_not_exceed_confirmed_capacity` | Confirms that waitlisting does not create over-capacity confirmed bookings. |
 | BR3 End time later than start time | `test_invalid_slot_time_is_rejected` | Covers invalid slot-time input. |
-| FR5 Full slots create FIFO waitlist entries | `test_full_slot_places_student_on_waitlist`, `test_cancellation_promotes_first_eligible_waitlisted_student` | Verifies the assessed V1.1 change. |
+| FR5 Full slots create FIFO waitlist entries | `test_full_slot_places_student_on_waitlist`, `test_cancellation_promotes_first_eligible_waitlisted_student` | Verifies the V1.1 waitlist behaviour. |
 | BR4 No duplicate active entry for same slot | `test_duplicate_waitlist_entry_is_rejected` | Protects against repeated-click duplicate state. |
 | BR5 Promotion preserves overlap/capacity rules | `test_promotion_does_not_create_overlap`, `test_waitlist_does_not_exceed_confirmed_capacity` | Protects existing rules after the change. |
 | QR1 Invalid requests fail clearly without incorrect confirmed state | invalid-name, overlap, duplicate, unauthorised-cancellation and invalid-time tests | Provides negative-path quality evidence. |

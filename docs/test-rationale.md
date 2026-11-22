@@ -1,6 +1,6 @@
 # Automated Test Rationale
 
-The automated suite is intentionally small and requirement-focused. It covers normal behaviour, invalid input, boundaries, ownership rules, the assessed V1.1 change and regression risks.
+The automated suite is intentionally small and requirement-focused. It covers normal behaviour, invalid input, boundaries, ownership rules, the V1.1 waitlist change and regression risks.
 
 - `test_valid_booking_is_confirmed` — normal path for FR2.
 - `test_empty_student_name_is_rejected` — invalid required input for QR1.

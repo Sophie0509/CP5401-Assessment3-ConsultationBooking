@@ -31,8 +31,8 @@ Deployed manual validation was completed on 2026-11-09. All five planned scenari
 
 ## Evidence Links
 
-- Assessed Change Request: https://github.com/Sophie0509/CP5401-Assessment3-ConsultationBooking/issues/1
-- Assessed Pull Request: https://github.com/Sophie0509/CP5401-Assessment3-ConsultationBooking/pull/2
+- Change Request: https://github.com/Sophie0509/CP5401-Assessment3-ConsultationBooking/issues/1
+- Pull Request: https://github.com/Sophie0509/CP5401-Assessment3-ConsultationBooking/pull/2
 - Quality Pipeline Hardening Issue: https://github.com/Sophie0509/CP5401-Assessment3-ConsultationBooking/issues/3
 - Impact Analysis: https://github.com/Sophie0509/CP5401-Assessment3-ConsultationBooking/blob/main/docs/impact-analysis.md
 - Review Intake: https://github.com/Sophie0509/CP5401-Assessment3-ConsultationBooking/blob/main/docs/review-intake.md

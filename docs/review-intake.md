@@ -16,9 +16,9 @@ ChatGPT was used to help implement the waitlist change, revise tests and update 
 - requirements and change documentation
 
 ## AI assumptions to verify
-1. List order can represent FIFO order for this small assessment application.
+1. List order can represent FIFO order for this small in-memory application.
 2. A waitlisted student is promoted only if promotion does not create an overlap.
-3. Local in-memory/session-state storage is acceptable for the assessment demonstration.
+3. Local in-memory/session-state storage is acceptable for the project demonstration.
 
 ## Human verification
 - Read and explain the changed logic.

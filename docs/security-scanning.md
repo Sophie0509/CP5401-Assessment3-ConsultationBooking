@@ -47,7 +47,7 @@ Final results:
 ### Initial Ruff run
 The first run used Ruff's broad default rule set and failed on import ordering and modern Python typing-style suggestions. These were assessed as low-risk maintainability/style findings, not security or behavioural defects.
 
-**Decision:** the CI rule set was narrowed to correctness and unused-code-focused Ruff checks so the assessed static-analysis gate remains relevant to code quality without creating an unrelated style/type refactor after the V1.1 application release.
+**Decision:** the CI rule set was narrowed to correctness and unused-code-focused Ruff checks so the static-analysis gate remains focused on relevant code-quality risks without introducing an unrelated style/type refactor.
 
 **Disposition:** configuration corrected; rerun passed.
 
