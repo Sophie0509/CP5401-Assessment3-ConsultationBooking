@@ -41,4 +41,3 @@ Deployed manual validation was completed on 2026-11-09. All five planned scenari
 - Traceability: https://github.com/Sophie0509/CP5401-Assessment3-ConsultationBooking/blob/main/docs/traceability.md
 - Test Rationale: https://github.com/Sophie0509/CP5401-Assessment3-ConsultationBooking/blob/main/docs/test-rationale.md
 - Manual Validation Record: https://github.com/Sophie0509/CP5401-Assessment3-ConsultationBooking/blob/main/docs/manual-validation.md
-- AI-use Record: https://github.com/Sophie0509/CP5401-Assessment3-ConsultationBooking/blob/main/docs/ai-use.md
